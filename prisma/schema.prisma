@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Karyawan {
+  id        Int         @id @default(autoincrement())
+  nama      String
+  absensi   Absensi[]
+  penjualan Penjualan[]
+}
+
+model Absensi {
+  id         Int      @id @default(autoincrement())
+  tanggal    DateTime
+  status     String
+  karyawanId Int
+  karyawan   Karyawan @relation(fields: [karyawanId], references: [id])
+}
+
+model Penjualan {
+  id                Int      @id @default(autoincrement())
+  total_pendapatan  Int
+  tanggal_transaksi DateTime
+  karyawanId        Int
+  karyawan          Karyawan @relation(fields: [karyawanId], references: [id])
+}
